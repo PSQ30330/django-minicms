@@ -50,11 +50,10 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
-    def __str__(self):
-        return self.name
+
     class Meta:
-        verbose_name = '添加新闻'
-        verbose_name_plural = '添加新闻'
+        verbose_name = '发布新闻'
+        verbose_name_plural = '发布新闻'
 
 
 class Gender(models.Model):
