@@ -1,3 +1,2 @@
-# django-minicms
-Django
-内容管理系统
+﻿# django-minicms
+Django内容管理系统
