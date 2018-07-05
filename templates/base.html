@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}欢迎光临{% endblock title %} - 随便玩玩新闻网</title>
-  
+
     <!-- Bootstrap -->
     <link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
-  
+
     <!-- 引入下面两个库让 IE8 支持 HTML5 元素 -->
     <!-- 警告: Respond.js 通过 file:// 浏览的时候不能正常工作！-->
     <!--[if lt IE 9]>
@@ -16,69 +16,97 @@
       <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
-    body {
-        padding-top: 60px;
-    }
+        body {
+            padding-top: 60px;
+        }
     </style>
     {% block css %}
-        
+
     {% endblock css %}
 
     {% block js %}
-        
+
     {% endblock js %}
-  </head>
-  <body>
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
-      <div class="navbar-header">
-         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> 
-         <span class="sr-only">Toggle navigation</span>
-         <span class="icon-bar"></span>
-         <span class="icon-bar"></span>
-         <span class="icon-bar"></span>
-         </button> 
-         <span class="navbar-brand"><a href="/">随便玩玩新闻网</a></span>
-      </div>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand"><a href="/">随便玩玩新闻网</a></span>
+        </div>
 
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          {% for column in nav_display_columns %}
-              <li><a href="{{ column.get_absolute_url }}">{{ column.name }}</a></li>
-          {% endfor %}
-        </ul>
-    </div>
-    </nav>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                {% for column in nav_display_columns %}
+                    <li><a href="{{ column.get_absolute_url }}">{{ column.name }}</a></li>
+                {% endfor %}
+            </ul>
 
-    <div class="row clearfix">
-        <div class="col-md-12">
-            {% block content %}
-                <h1>随便玩玩新闻网</h1>
-            {% endblock content %}
+        {% if username %}
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a >{{ username }}</a>
+                    </li>
+                    <li>
+                        <a href="/logout">退出</a>
+                    </li>
+                </ul>
+            {% else %}
+
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/login/">{{ username }}登陆</a>
+                    </li>
+                    <li>
+                        <a href="/regist">注册</a>
+                    </li>
+                </ul>
+
+            {% endif %}
+        </div>
+
+
         </div>
     </div>
+</nav>
 
-    <div class="row clearfix" style="padding-top: 20px;">
-      <div class="col-md-12">
-       <div class="well well-sm">
-        <div style="text-align:center;">
-
-        </div> 
-        <div>
-
-        </div>
-        <div style="padding-top:10px; text-align: center">
-          <a href="https://www.djangoproject.com/" target="_blank" rel="nofollow"></a><a href="http://bce.baidu.com/" target="_blank" rel="nofollow"></a><br>
-
-          Copyright &copy; 2018 Powered by 潘绍乾 All Rights Reserved.
-
-        </div>
-       </div>
-      </div>
+<div class="row clearfix">
+    <div class="col-md-12">
+        {% block content %}
+            <h1>随便玩玩新闻网</h1>
+        {% endblock content %}
     </div>
-  
-    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    {% include "baidutongji.html" %}
-  </body>
+</div>
+
+<div class="row clearfix" style="padding-top: 20px;">
+    <div class="col-md-12">
+        <div class="well well-sm">
+            <div style="text-align:center;">
+
+            </div>
+            <div>
+
+            </div>
+            <div style="padding-top:10px; text-align: center">
+                <a href="https://www.djangoproject.com/" target="_blank" rel="nofollow"></a><a
+                    href="http://bce.baidu.com/" target="_blank" rel="nofollow"></a><br>
+
+                Copyright &copy; 2018 Powered by 潘绍乾 All Rights Reserved.
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+{% include "baidutongji.html" %}
+</body>
 </html>

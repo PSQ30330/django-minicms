@@ -60,22 +60,14 @@ class Gender(models.Model):
     name = models.CharField(max_length=32)
 
 
-class userinfo(models.Model):
-    nid = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=30, verbose_name='用户名', editable=False)
-    email = models.EmailField(db_index=True)
-    memo = models.TextField()
-    img = models.ImageField(upload_to='upload')
-    user_type = models.ForeignKey("UserType", null=True, blank=True)
-    gender_choices = (
-        (0, "男"),
-        (1, "女"),
-    )
-    gender = models.IntegerField(choices=gender_choices, default=1)
-
-
-class UserType(models.Model):
-    name = models.CharField(max_length=32)
-
+@python_2_unicode_compatible
+class User(models.Model):
+    username = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)
+    email = models.EmailField()
+    REQUIRED_FIELDS=['email']
     def __str__(self):
-        return self.name
+        return self.username
+    class Meta:
+        verbose_name = '用户'
+        verbose_name_plural = '用户'

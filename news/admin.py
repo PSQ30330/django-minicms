@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.contrib.auth import login
 
-from .models import Column, Article
+from .models import Column, Article, User
 
 
 class ColumnAdmin(admin.ModelAdmin):
@@ -13,7 +14,6 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(Column, ColumnAdmin)
 admin.site.register(Article, ArticleAdmin)
+admin.site.register(User)
 # Register your models here.
 from news import models
-admin.site.register(models.userinfo)
-admin.site.register(models.UserType)

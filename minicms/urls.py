@@ -17,6 +17,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 from DjangoUeditor import urls as DjangoUeditor_urls
+from news import urls
+import news
 
 urlpatterns = [
     url(r'^a$', RedirectView.as_view(url='/b/', permanent=True)),
@@ -25,7 +27,9 @@ urlpatterns = [
     url(r'^news/(?P<pk>\d+)/(?P<article_slug>[^/]+)/$', 'news.views.article_detail', name='article'),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'',include(news.urls)),
     url(r'^ueditor/', include(DjangoUeditor_urls)),
+
 ]
 
 
