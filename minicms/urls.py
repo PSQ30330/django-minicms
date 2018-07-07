@@ -26,9 +26,11 @@ urlpatterns = [
     url(r'^column/(?P<column_slug>[^/]+)/$', 'news.views.column_detail', name='column'),
     url(r'^news/(?P<pk>\d+)/(?P<article_slug>[^/]+)/$', 'news.views.article_detail', name='article'),
 
+
     url(r'^admin/', include(admin.site.urls)),
     url(r'',include(news.urls)),
     url(r'^ueditor/', include(DjangoUeditor_urls)),
+    url(r'^likes/', include('likes.urls')),
 
 ]
 

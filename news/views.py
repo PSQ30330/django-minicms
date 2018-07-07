@@ -1,42 +1,78 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponse,HttpResponseRedirect
-from .models import Column, Article, User
-from django.shortcuts import redirect
+from .models import Column, Article, User ,NewsComment
 from django import forms
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template import RequestContext
-from django import forms
+
 
 
 def index(request):
     home_display_columns = Column.objects.filter(home_display=True)
     nav_display_columns = Column.objects.filter(nav_display=True)
-    # username = User.objects.filter(username__exact='test', )[0]
     username = request.COOKIES.get('username', '')
     return render(request, 'index.html', {
         'home_display_columns': home_display_columns,
         'nav_display_columns': nav_display_columns,
         'username': username,
     })
-
-
 def column_detail(request, column_slug):
     column = Column.objects.get(slug=column_slug)
+    print(column.article_set.all,column_slug)
     username = request.COOKIES.get('username', '')
-    return render(request, 'news/column.html', {'username':username,'column': column})
+
+    return render(request, 'news/column.html', {'username':username,'column': column,})
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = NewsComment
+        fields = ['username', 'comment', 'article']
+class CommentsForm(forms.Form):
+    comment = forms.CharField(label='pinglun', max_length=50)
+
+    @csrf_exempt
+    def post(request):
+        if request.method == 'POST':
+            comment_form = CommentsForm(request.POST)
+            username = request.COOKIES.get('username', '')
+            id = request.path
+
+            if comment_form.is_valid():
+                comment =comment_form.cleaned_data['comment']
+                print(comment_form.cleaned_data['comment'],username,id)
+                NewsComment.objects.create(comment=comment,username=username,article='34')
+                c=NewsComment.objects.filter(username='test')
+                print(c)
+                return redirect(request.META['HTTP_REFERER'])
+        else:
+            return render_to_response('comment.html')
 
 
 def article_detail(request, pk, article_slug):
     article = Article.objects.get(pk=pk)
+    # comment =NewsComment.objects.filter(article=pk)
     username = request.COOKIES.get('username', '')
-    if article_slug != article.slug:
-        return redirect(article, permanent=True)
+    if request.method == 'POST':
+        comment_form = CommentsForm(request.POST)
+        username = request.COOKIES.get('username', '')
 
-    return render(request, 'news/article.html', {'username':username,'article': article})
+        if comment_form.is_valid():
+            comment = comment_form.cleaned_data['comment']
+            print(comment_form.cleaned_data['comment'], username, pk)
+            NewsComment.objects.create(comment=comment, username=username, article=pk)
+
+        return redirect(reverse(article_detail,args=[pk, article_slug]))
+    else:
+        if article_slug != article.slug:
+            return redirect(article, permanent=True)
+        c = NewsComment.objects.filter(article=pk).all()
+
+
+        return render(request, 'news/article.html', {'article': article,'comment':c,'username':username})
 
 
 # Create your views here.

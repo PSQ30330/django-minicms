@@ -48,7 +48,7 @@ class Article(models.Model):
         return reverse('article', args=(self.pk, self.slug))
 
     def __str__(self):
-        return self.title
+        return self.title,self.slug
 
 
     class Meta:
@@ -71,3 +71,15 @@ class User(models.Model):
     class Meta:
         verbose_name = '用户'
         verbose_name_plural = '用户'
+
+
+class NewsComment(models.Model):
+    username = models.CharField('用户名',max_length=50)
+    comment = models.TextField('评论内容')
+    article = models.CharField('文章',max_length=50)
+
+    class Meta:
+        verbose_name = '新闻评论'
+        verbose_name_plural = verbose_name
+    # def __str__(self):
+    #     return self.comment[:20],self.username
