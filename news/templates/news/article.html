@@ -12,18 +12,37 @@
     </div>
     <br>
     <br>
+    <h3>此文章已经被{{ like|length }}人点赞</h3>
+    <br>
+    {% if messages %}
+        <ul class="messagelist">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form method='post' action='/like/' enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="article" value={{ pk }}>
+        <input type="hidden" name="article_slug" value={{ article_slug }}>
+        <input type="submit" value="喜欢">
+    </form>
+    <br>
+    <br>
     <br>
     <form method='post' enctype="multipart/form-data">
         {% csrf_token %}
         <input type="text" size="300px" name="comment">
+        <br>
         <input type="submit" value="新闻评论"/>
     </form>
     <br><br>
+
     <br><br>
     {% for foo in comment %}
-<ul>
-        <li><h3>评论：{{ foo.comment }}</h3></li>
-        <li>用户：{{ foo.username }}</li>
+        <ul>
+            <li><h3>评论：{{ foo.comment }}</h3></li>
+            <li>用户：{{ foo.username }}</li>
         </ul>
         <br>
     {% endfor %}

@@ -19,7 +19,7 @@ def check_login(func):
             #若未登录，不处理
             data = {}
             data['status'] = 401
-            data['message'] = u'no login'
+            data['message'] = u'未登录'
             return HttpResponse(json.dumps(data), content_type="application/json")
     return warpper
 

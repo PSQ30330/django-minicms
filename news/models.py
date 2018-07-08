@@ -83,3 +83,10 @@ class NewsComment(models.Model):
         verbose_name_plural = verbose_name
     # def __str__(self):
     #     return self.comment[:20],self.username
+class Like(models.Model):
+    username = models.CharField('用户名',max_length=50)
+    like = models.CharField('点赞',max_length=50)
+    article = models.CharField('文章', max_length=50)
+
+    class Meta:
+        verbose_name_plural='点赞'
