@@ -1,7 +1,5 @@
 from django.contrib import admin
-from django.contrib.auth import login
-
-from .models import Column, Article, User, NewsComment,Like
+from .models import Column, Article, User, NewsComment,Like,Start
 
 
 class ColumnAdmin(admin.ModelAdmin):
@@ -20,11 +18,15 @@ class NewsCommentAdmmin(admin.ModelAdmin):
 
 class LikeAdmin(admin.ModelAdmin):
     list_displlay = ('like','username')
+
+class StartAdmmin(admin.ModelAdmin):
+    list_display = ('username','start')
+
+
 admin.site.register(Column, ColumnAdmin)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(User,UserAdmin)
 admin.site.register(NewsComment, NewsCommentAdmmin)
 admin.site.register(Like,LikeAdmin)
-# Register your models here.
-# Register your models here.
-from news import models
+admin.site.register(Start,StartAdmmin)
+

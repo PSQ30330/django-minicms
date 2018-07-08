@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .models import Column, Article, User, NewsComment, Like
+from .models import Column, Article, User, NewsComment, Like,Start
 from django import forms
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -18,6 +18,7 @@ def index(request):
         'nav_display_columns': nav_display_columns,
         'username': username,
     })
+
 
 
 # 文章总展示
@@ -52,9 +53,24 @@ class CommentsForm(forms.Form):
                 print(c)
                 return redirect(request.META['HTTP_REFERER'])
         else:
-            return render_to_response('comment.html')
+            return render_to_response('mysef.html')
 
-
+@has_login
+def myself(request):
+    article = []
+    likes =[]
+    username = request.COOKIES.get('username', '')
+    start=Start.objects.filter(username=username).all()
+    like = Like.objects.filter(username=username).all()
+    comment = NewsComment.objects.filter(username=username).all()
+    for j in start:
+        i=Article.objects.filter(pk=j.start).first()
+        article.append(i.title)
+    for j in like:
+        print(j.article)
+        i=Article.objects.filter(pk=j.article).first()
+        likes.append(i.title)
+    return render(request, 'myself.html',{'username':username,'start':article,'like':likes,'comment':comment})
 # 文章详情
 @has_login
 def article_detail(request, pk, article_slug):
@@ -77,10 +93,13 @@ def article_detail(request, pk, article_slug):
         if article_slug != article.slug:
             return redirect(article, permanent=True)
         c = NewsComment.objects.filter(article=pk).all()
-        # like = Like.objects.filter(article=pk).all()
-        like =['as','sad']
+        likes = Like.objects.filter(article=pk).all()
+
+        starts = Start.objects.filter(start=pk).all()
+        like = Like.objects.filter(article=pk,username=username).all()
+        start = Start.objects.filter(start=pk,username=username).all()
         return render(request, 'news/article.html',
-                      {'article': article, 'comment': c, 'username': username, 'pk': pk, 'like': like,'article_slug':article_slug})
+                      {'article': article, 'comment': c, 'username': username, 'pk': pk, 'like': like,'likes':likes,'article_slug':article_slug,'starts':starts,'start':start})
 
 
 # Create your views here.
@@ -149,4 +168,16 @@ def like(request):
         else:
             Like.objects.create( username=username, article=article,like='1')
     return redirect(reverse(article_detail, args=[article, article_slug]))
-
+@has_login
+@csrf_exempt
+def start(request):
+    if request.method=='POST':
+        username = request.COOKIES.get('username', '')
+        article = request.POST.get('article')
+        article_slug = request.POST.get('article_slug')
+        print('收藏',username,article)
+        if Start.objects.filter(username=username,start=article).all():
+            messages.error(request,'已经收藏此文章，快去个人中心去看看吧！',extra_tags='start')
+        else:
+            Start.objects.create(username=username,start=article)
+    return redirect(reverse(article_detail, args=[article, article_slug]))

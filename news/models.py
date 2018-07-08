@@ -90,3 +90,9 @@ class Like(models.Model):
 
     class Meta:
         verbose_name_plural='点赞'
+
+class Start(models.Model):
+    username = models.CharField('用户名',max_length=100)
+    start = models.CharField('收藏',max_length=100)
+    class Meta:
+        verbose_name_plural='收藏'

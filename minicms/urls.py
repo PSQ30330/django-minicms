@@ -30,6 +30,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'',include(news.urls)),
     url(r'^ueditor/', include(DjangoUeditor_urls)),
+    url(r'start','news.views.start',name='收藏'),
+    url(r'myself','news.views.myself',name='个人中心'),
 
 
 ]

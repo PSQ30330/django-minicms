@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+    个人中心
+{% endblock title %}
+{% block content %}
+    <h2>收藏的文章</h2>
+    {% for foo in start %}
+        <li>{{ foo }}</li>
+    {% endfor %}
+
+    <h2>点赞的文章</h2>
+    {% for foo in like %}
+        <li>{{ foo }}</li>
+    {% endfor %}
+
+    <h2>所有评论</h2>
+    {% for foo in comment %}
+        <ul>
+        <li>{{ foo.article }}</li>
+        <li>{{ foo.comment }}</li>
+        </ul>
+    {% endfor %}
+
+{% endblock %}
